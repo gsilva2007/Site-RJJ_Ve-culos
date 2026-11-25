@@ -1,0 +1,48 @@
+{% extends 'loja/admin/base.html' %}{% block painel %}<h1>Consultas SQL / ORM</h1>
+<h2>1. Múltiplas tabelas com totalização</h2>
+<p class="muted">Relaciona marca → veículo → movimentação, contabilizando registros.</p>
+<div class="table-wrap">
+<table>
+<tr>
+<th>Marca</th>
+<th>Veículos</th>
+<th>Total de movimentações</th>
+</tr>{% for x in totais %}<tr>
+<td>{{ x.nome }}</td>
+<td>{{ x.total_veiculos }}</td>
+<td>{{ x.total_movimentacoes }}</td>
+</tr>
+{% endfor %}</table>
+</div>
+<h2>2. Agrupamento por marca e situação</h2>
+<div class="table-wrap">
+<table>
+<tr>
+<th>Marca</th>
+<th>Situação</th>
+<th>Quantidade</th>
+<th>Valor total anunciado</th>
+</tr>{% for x in agrupamento %}<tr>
+<td>{{ x.marca__nome }}</td>
+<td>{{ x.status }}</td>
+<td>{{ x.quantidade }}</td>
+<td>R$ {{ x.valor_total|floatformat:2 }}</td>
+</tr>
+{% endfor %}</table>
+</div>
+<h2>3. Consulta Pivot: entradas × saídas por marca</h2>
+<div class="table-wrap">
+<table>
+<tr>
+<th>Marca</th>
+<th>Entradas</th>
+<th>Saídas</th>
+</tr>{% for x in pivot %}<tr>
+<td>{{ x.nome }}</td>
+<td>{{ x.entradas }}</td>
+<td>{{ x.saidas }}</td>
+</tr>
+{% endfor %}</table>
+</div>
+{% endblock %}
+
