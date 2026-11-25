@@ -1,0 +1,56 @@
+{% extends 'loja/base.html' %}{% block content %}<main class="container section">
+<p>
+<a href="{% url 'catalogo' %}">← Voltar ao catálogo</a>
+</p>
+<div class="detail-grid">
+<div>
+<div class="gallery-main">{% if fotos %}<img id="galeria-principal" src="{{ fotos.0.imagem.url }}" alt="{{ veiculo }}">{% else %}<div class="placeholder">🚗</div>
+{% endif %}<button class="gallery-arrow prev" type="button" data-direction="-1" aria-label="Foto anterior">‹</button>
+<button class="gallery-arrow next" type="button" data-direction="1" aria-label="Próxima foto">›</button>
+</div>
+<div class="thumbs">{% for foto in fotos %}<button type="button" class="thumb {% if forloop.first %}active
+{% endif %}" data-image="{{ foto.imagem.url }}">
+<img src="{{ foto.imagem.url }}" alt="Foto {{ forloop.counter }}">
+</button>
+{% endfor %}</div>
+</div>
+<aside class="detail-info">
+<h1>{{ veiculo.marca }} {{ veiculo.modelo }}</h1>
+<p class="price">R$ {{ veiculo.preco|floatformat:2 }}</p>
+<dl>
+<div>
+<dt>Ano</dt>
+<dd>{{ veiculo.ano }}</dd>
+</div>
+<div>
+<dt>Quilometragem</dt>
+<dd>{{ veiculo.quilometragem }} km</dd>
+</div>
+<div>
+<dt>Câmbio</dt>
+<dd>{{ veiculo.cambio }}</dd>
+</div>
+<div>
+<dt>Combustível</dt>
+<dd>{{ veiculo.combustivel }}</dd>
+</div>
+<div>
+<dt>Motor</dt>
+<dd>{{ veiculo.motor|default:'Não informado' }}</dd>
+</div>
+<div>
+<dt>Cor</dt>
+<dd>{{ veiculo.cor|default:'Não informado' }}</dd>
+</div>
+</dl>
+<p>{{ veiculo.descricao }}</p>
+<a class="btn full" target="_blank" rel="noopener noreferrer" href="https://wa.me/{{ whatsapp }}?text=Ol%C3%A1%21%20Tenho%20interesse%20no%20ve%C3%ADculo%20{{ veiculo.marca.nome|urlencode }}%20{{ veiculo.modelo|urlencode }}%20{{ veiculo.ano }}.">Conversar no WhatsApp ↗</a>{% if user.is_authenticated %}<form method="post" action="{% url 'alternar_interesse' veiculo.pk %}">{% csrf_token %}<input type="hidden" name="voltar" value="{{ request.path }}">
+<button class="btn secondary full">{% if salvo %}Remover dos meus veículos{% else %}♡ Salvar nos meus veículos
+{% endif %}</button>
+</form>{% else %}<a class="btn secondary full" href="{% url 'entrar' %}?next={{ request.path|urlencode }}">♡ Entre para salvar este veículo</a>
+{% endif %}{% if not user.is_authenticated %}<small class="muted">Para salvar, você precisará entrar na sua conta.</small>
+{% endif %}</aside>
+</div>
+</main>
+{% endblock %}
+

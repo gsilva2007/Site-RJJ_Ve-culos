@@ -1,0 +1,25 @@
+{% extends 'loja/base.html' %}{% block content %}<main class="container section">
+<h1>Catálogo de veículos</h1>
+<p class="muted">Encontre o veículo ideal para você.</p>
+<form class="filters" method="get">
+<label>Buscar<input type="search" name="busca" value="{{ busca }}" placeholder="Marca ou modelo">
+</label>
+<label>Marca<select name="marca">
+<option value="">Todas</option>{% for m in marcas %}<option value="{{ m.pk }}" {% if marca_atual == m.pk|stringformat:'s' %}selected
+{% endif %}>{{ m.nome }}</option>
+{% endfor %}</select>
+</label>
+<label>Ano<select name="ano">
+<option value="">Todos</option>{% for a in anos %}<option value="{{ a }}" {% if ano_atual == a|stringformat:'s' %}selected
+{% endif %}>{{ a }}</option>
+{% endfor %}</select>
+</label>
+<button class="btn">Filtrar</button>
+<a class="btn secondary" href="{% url 'catalogo' %}">Limpar</a>
+</form>
+<p class="muted">{{ veiculos|length }} veículo(s) encontrado(s)</p>
+<div class="cars">{% for v in veiculos %}{% include 'loja/_card.html' %}{% empty %}<p>Nenhum veículo encontrado com esses filtros.</p>
+{% endfor %}</div>
+</main>
+{% endblock %}
+

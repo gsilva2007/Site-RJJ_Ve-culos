@@ -1,0 +1,15 @@
+<article class="car-card">
+<a href="{% url 'detalhe' v.pk %}" class="car-photo">{% with foto=v.foto_principal %}{% if foto %}<img src="{{ foto.imagem.url }}" alt="{{ v }}">{% else %}<div class="placeholder">🚗</div>
+{% endif %}{% endwith %}</a>
+<div class="car-body">
+<h3>{{ v.marca.nome }} {{ v.modelo }}</h3>
+<p class="muted">{{ v.ano }} • {{ v.cambio }} • {{ v.combustivel }}</p>
+<p class="muted">{{ v.quilometragem }} km</p>
+<div class="price">R$ {{ v.preco|floatformat:2 }}</div>
+<div class="buttons">
+<a class="btn secondary" href="{% url 'detalhe' v.pk %}">Ver detalhes</a>{% if user.is_authenticated %}<form method="post" action="{% url 'alternar_interesse' v.pk %}">{% csrf_token %}<input type="hidden" name="voltar" value="{{ request.path }}">
+<button class="btn small" type="submit">♡ Salvar</button>
+</form>{% else %}<a class="btn small" href="{% url 'entrar' %}?next={{ request.path|urlencode }}">♡ Salvar</a>
+{% endif %}</div>
+</div>
+</article>

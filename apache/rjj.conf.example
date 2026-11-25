@@ -1,0 +1,20 @@
+# Exemplo para Apache 2.4 no Linux, com mod_wsgi instalado e HTTPS a configurar.
+<VirtualHost *:80>
+    ServerName SEU_DOMINIO
+    WSGIDaemonProcess rjj python-home=/var/www/rjj/.venv python-path=/var/www/rjj
+    WSGIProcessGroup rjj
+    WSGIScriptAlias / /var/www/rjj/config/wsgi.py
+    Alias /static/ /var/www/rjj/staticfiles/
+    Alias /media/ /var/www/rjj/media/
+    <Directory /var/www/rjj/config>
+        <Files wsgi.py>
+            Require all granted
+        </Files>
+    </Directory>
+    <Directory /var/www/rjj/staticfiles>
+        Require all granted
+    </Directory>
+    <Directory /var/www/rjj/media>
+        Require all granted
+    </Directory>
+</VirtualHost>

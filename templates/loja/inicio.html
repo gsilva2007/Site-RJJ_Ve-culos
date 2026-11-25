@@ -1,0 +1,20 @@
+{% extends 'loja/base.html' %}{% block content %}<section class="hero">
+<div class="container">
+<span class="eyebrow">RJJ AUTOMÓVEIS & MÁQUINAS</span>
+<h1>Encontre seu próximo <em>carro</em>
+</h1>
+<p>Veículos seminovos, negociação direta e oportunidades em Assis e região.</p>
+<a class="btn" href="{% url 'catalogo' %}">Explorar catálogo →</a>
+</div>
+</section>
+<main class="container section">
+<h2>Destaques do catálogo</h2>
+<p class="muted">Veja alguns dos veículos disponíveis em nossa loja.</p>
+<div class="cars">{% for v in veiculos %}{% include 'loja/_card.html' %}{% empty %}<p>Nenhum veículo cadastrado ainda. O administrador pode adicionar os primeiros carros.</p>
+{% endfor %}</div>
+<div class="center">
+<a class="btn large" href="{% url 'catalogo' %}">Ver todos os carros →</a>
+</div>
+</main>
+{% endblock %}
+
