@@ -1,0 +1,149 @@
+
+{% extends 'loja/admin/base.html' %}
+
+{% block painel %}
+
+<div class="heading-row">
+    <h1>{{ titulo }}</h1>
+    <a class="btn" href="{% url 'novo_admin' tipo %}">
+        + Novo cadastro
+    </a>
+</div>
+
+<form class="filters" method="get">
+    <label>
+        Pesquisar
+        <input
+            name="busca"
+            placeholder="Buscar registro"
+            value="{{ busca }}"
+        >
+    </label>
+
+    {% if tipo == 'veiculos' %}
+    <label>
+        Status
+        <select name="status">
+            <option value="">Todos</option>
+            <option value="disponivel"
+                {% if status_atual == 'disponivel' %}selected{% endif %}>
+                Disponível
+            </option>
+            <option value="reservado"
+                {% if status_atual == 'reservado' %}selected{% endif %}>
+                Reservado
+            </option>
+            <option value="vendido"
+                {% if status_atual == 'vendido' %}selected{% endif %}>
+                Vendido
+            </option>
+        </select>
+    </label>
+    {% endif %}
+
+    <button class="btn">Filtrar</button>
+</form>
+
+<div class="table-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Registro</th>
+
+                {% if tipo == 'veiculos' %}
+                    <th>Ano</th>
+                    <th>Preço</th>
+                    <th>Status</th>
+
+                {% elif tipo == 'clientes' %}
+                    <th>Usuário</th>
+                    <th>E-mail</th>
+                    <th>Telefone</th>
+                    <th>Situação</th>
+
+                {% elif tipo == 'movimentos' %}
+                    <th>Tipo</th>
+                {% endif %}
+
+                <th>Ações</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for o in objetos %}
+            <tr>
+                <td>{{ o.pk }}</td>
+                <td>{{ o }}</td>
+
+                {% if tipo == 'veiculos' %}
+                    <td>{{ o.ano }}</td>
+                    <td>R$ {{ o.preco|floatformat:2 }}</td>
+                    <td>{{ o.get_status_display }}</td>
+
+                {% elif tipo == 'clientes' %}
+                    <td>
+                        {% if o.usuario %}
+                            {{ o.usuario.username }}
+                        {% else %}
+                            Sem conta
+                        {% endif %}
+                    </td>
+
+                    <td>{{ o.email|default:"—" }}</td>
+                    <td>{{ o.telefone|default:"—" }}</td>
+
+                    <td>
+                        {% if o.usuario %}
+                            {% if o.usuario.is_active %}
+                                Ativo
+                            {% else %}
+                                Bloqueado
+                            {% endif %}
+                        {% else %}
+                            Sem acesso
+                        {% endif %}
+                    </td>
+
+                {% elif tipo == 'movimentos' %}
+                    <td>{{ o.get_tipo_display }}</td>
+                {% endif %}
+
+                <td>
+                    <a
+                        class="btn secondary small"
+                        href="{% url 'detalhe_admin' tipo o.pk %}">
+                        Detalhes
+                    </a>
+
+                    <a
+                        class="btn secondary small"
+                        href="{% url 'editar_admin' tipo o.pk %}">
+                        Editar
+                    </a>
+
+                    <form
+                        class="inline"
+                        method="post"
+                        action="{% url 'excluir_admin' tipo o.pk %}"
+                        onsubmit="return confirm('Excluir este registro?')">
+                        {% csrf_token %}
+                        <button class="btn danger small">
+                            Excluir
+                        </button>
+                    </form>
+                </td>
+            </tr>
+
+            {% empty %}
+            <tr>
+                <td colspan="8">
+                    Nenhum registro encontrado.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'loja/admin/base.html' %}{% block painel %}<h1>{% if obj %}Editar{% else %}Cadastrar
+{% endif %} — {{ titulo }}</h1>
+<form method="post" enctype="multipart/form-data" class="form-panel">{% csrf_token %}{{ form.non_field_errors }}{% for field in form %}<label>{{ field.label }}{{ field }}{% for erro in field.errors %}<small class="error">{{ erro }}</small>
+{% endfor %}</label>
+{% endfor %}{% if tipo == 'veiculos' %}<label>Fotos do veículo (máximo 8 por envio, 12 no total)<input type="file" name="fotos" accept="image/*" multiple>
+</label>
+{% endif %}<div class="buttons">
+<button class="btn">Salvar</button>
+<a class="btn secondary" href="{% url 'lista_admin' tipo %}">Cancelar</a>
+</div>
+</form>{% if tipo == 'veiculos' and obj and obj.fotos.all %}<h2>Fotos cadastradas</h2>
+<div class="thumbs">{% for foto in obj.fotos.all %}<div>
+<img src="{{ foto.imagem.url }}" alt="Foto">
+<form method="post" action="{% url 'excluir_foto' foto.pk %}">{% csrf_token %}<button class="btn danger small">Remover</button>
+</form>
+</div>
+{% endfor %}</div>
+{% endif %}
+{% endblock %}
+

@@ -1,0 +1,16 @@
+{% extends 'loja/base.html' %}{% block content %}<main class="container admin-layout">
+<aside class="sidebar">
+<h3>Painel administrativo</h3>
+<a href="{% url 'lista_admin' 'veiculos' %}">Veículos</a>
+<a href="{% url 'lista_admin' 'marcas' %}">Marcas</a>
+<a href="{% url 'lista_admin' 'clientes' %}">Clientes</a>
+<a href="{% url 'lista_admin' 'movimentos' %}">Tipos de movimento</a>
+<a href="{% url 'movimentacoes' %}">Movimentações</a>
+<a href="{% url 'consultas' %}">Consultas SQL</a>
+</aside>
+<section class="admin-content">{% block painel %}
+{% endblock %}
+</section>
+</main>
+{% endblock %}
+

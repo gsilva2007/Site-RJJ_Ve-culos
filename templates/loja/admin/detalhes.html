@@ -1,0 +1,26 @@
+{% extends 'loja/admin/base.html' %}
+{% block painel %}
+<h1>Detalhes — {{ titulo }}</h1>
+<div class="form-panel">
+  <p><strong>Identificador:</strong> {{ obj.pk }}</p>
+  <p><strong>Registro:</strong> {{ obj }}</p>
+  {% if tipo == 'veiculos' %}
+  <p><strong>Marca:</strong> {{ obj.marca }}</p>
+  <p><strong>Ano:</strong> {{ obj.ano }}</p>
+  <p><strong>Preço anunciado:</strong> R$ {{ obj.preco|floatformat:2 }}</p>
+  <p><strong>Quilometragem:</strong> {{ obj.quilometragem }} km</p>
+  <p><strong>Status:</strong> {{ obj.get_status_display }}</p>
+  <p><strong>Câmbio:</strong> {{ obj.cambio }}</p>
+  <p><strong>Combustível:</strong> {{ obj.combustivel }}</p>
+  {% elif tipo == 'clientes' %}
+  <p><strong>Telefone:</strong> {{ obj.telefone }}</p>
+  <p><strong>E-mail:</strong> {{ obj.email|default:'Não informado' }}</p>
+  {% elif tipo == 'movimentos' %}
+  <p><strong>Tipo:</strong> {{ obj.get_tipo_display }}</p>
+  {% endif %}
+  <div class="buttons">
+    <a class="btn" href="{% url 'editar_admin' tipo obj.pk %}">Editar</a>
+    <a class="btn secondary" href="{% url 'lista_admin' tipo %}">Voltar</a>
+  </div>
+</div>
+{% endblock %}
