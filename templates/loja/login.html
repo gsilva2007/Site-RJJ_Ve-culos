@@ -1,0 +1,15 @@
+{% extends 'loja/base.html' %}{% load static %}{% block content %}<main class="auth-page">
+<div class="auth-inner">
+<img class="auth-logo" src="{% static 'img/logo.png' %}" alt="Logo RJJ">
+<h1>Entrar</h1>
+<form method="post" class="auth-form">{% if proximo %}<input type="hidden" name="next" value="{{ proximo }}">{% endif %}{% csrf_token %}{% for error in form.non_field_errors %}<p class="error">{{ error }}</p>
+{% endfor %}<label>Usuário{{ form.username }}</label>
+<label>Senha{{ form.password }}</label>
+<button class="btn full">LOGIN</button>
+</form>
+<p class="muted">Ainda não tem conta? <a href="{% url 'cadastro' %}{% if proximo %}?next={{ proximo|urlencode }}{% endif %}">Cadastre-se</a>
+</p>
+</div>
+</main>
+{% endblock %}
+

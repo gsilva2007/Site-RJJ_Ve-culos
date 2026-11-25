@@ -1,0 +1,11 @@
+{% extends 'loja/base.html' %}{% block content %}<main class="container section narrow">
+<h1>Criar conta</h1>
+<p class="muted">Sua conta permite salvar veículos de interesse.</p>
+<form method="post" class="form-panel">{% if proximo %}<input type="hidden" name="next" value="{{ proximo }}">{% endif %}{% csrf_token %}{% for field in form %}<label>{{ field.label }}{{ field }}{% for erro in field.errors %}<small class="error">{{ erro }}</small>
+{% endfor %}{% if field.help_text %}<small class="muted">{{ field.help_text|striptags }}</small>
+{% endif %}</label>
+{% endfor %}<button class="btn">Cadastrar</button>
+</form>
+</main>
+{% endblock %}
+

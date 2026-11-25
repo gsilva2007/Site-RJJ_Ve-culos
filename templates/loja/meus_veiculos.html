@@ -1,0 +1,11 @@
+{% extends 'loja/base.html' %}{% block content %}<main class="container section">
+<h1>Meus veículos salvos</h1>
+<p class="muted">Carros de seu interesse. Essa lista é vinculada à sua conta.</p>
+<div class="cars">{% for item in itens %}{% with v=item.veiculo %}{% include 'loja/_card.html' %}{% endwith %}{% empty %}<p>Você ainda não salvou nenhum veículo. <a href="{% url 'catalogo' %}">Explorar catálogo</a>
+</p>
+{% endfor %}</div>{% if itens %}<button class="btn large" id="consultar-todos" data-numero="{{ whatsapp }}">Consultar todos pelo WhatsApp →</button>
+<div hidden id="interesses-texto">{% for item in itens %}{{ item.veiculo.marca.nome }} {{ item.veiculo.modelo }} {{ item.veiculo.ano }}&#10;
+{% endfor %}</div>
+{% endif %}</main>
+{% endblock %}
+
