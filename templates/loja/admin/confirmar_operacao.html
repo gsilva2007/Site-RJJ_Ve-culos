@@ -1,0 +1,21 @@
+
+{% extends 'loja/admin/base.html' %}
+
+{% block painel %}
+
+<div class="form-panel">
+    <p>Processando operação...</p>
+
+    <form id="form-operacao" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn">
+            Continuar
+        </button>
+    </form>
+</div>
+
+<script>
+    document.getElementById('form-operacao').submit();
+</script>
+
+{% endblock %}
