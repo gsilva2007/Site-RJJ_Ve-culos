@@ -1,0 +1,94 @@
+
+{% extends 'loja/admin/base.html' %}
+
+{% block painel %}
+
+<h1>Movimentações de estoque</h1>
+
+<p class="muted">
+    Entradas e saídas; operações automáticas também são
+    registradas quando um veículo é cadastrado ou seu status muda.
+</p>
+
+<form method="post" class="form-panel">
+    {% csrf_token %}
+
+    {% if form.non_field_errors %}
+        <div class="alert-error" role="alert"
+             style="padding: 12px; margin-bottom: 16px;
+                    border: 1px solid #dc3545;
+                    border-radius: 6px;
+                    color: #dc3545;">
+            {% for erro in form.non_field_errors %}
+                <p style="margin: 0;">{{ erro }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% for field in form %}
+        <label>
+            {{ field.label }}
+            {{ field }}
+            {{ field.errors }}
+        </label>
+    {% endfor %}
+
+    <button class="btn" type="submit">
+        Registrar movimentação
+    </button>
+</form>
+
+<form method="get" class="filters">
+    <label>
+        Tipo
+        <select name="tipo">
+            <option value="">Todos</option>
+            <option value="entrada"
+                {% if tipo_atual == 'entrada' %}selected{% endif %}>
+                Entrada
+            </option>
+            <option value="saida"
+                {% if tipo_atual == 'saida' %}selected{% endif %}>
+                Saída
+            </option>
+        </select>
+    </label>
+
+    <button class="btn" type="submit">
+        Filtrar
+    </button>
+</form>
+
+<div class="table-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Tipo</th>
+                <th>Veículo</th>
+                <th>Responsável</th>
+                <th>Observação</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for m in movimentacoes %}
+                <tr>
+                    <td>{{ m.data|date:'d/m/Y H:i' }}</td>
+                    <td>{{ m.movimento.nome }}</td>
+                    <td>{{ m.veiculo }}</td>
+                    <td>{{ m.responsavel|default:'Sistema' }}</td>
+                    <td>{{ m.observacao }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5">
+                        Sem movimentações.
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
